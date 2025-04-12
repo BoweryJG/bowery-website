@@ -4,257 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bowery - A New Operating System for Growth</title>
-    <!-- External Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- WebGL Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+    
     <!-- Custom Cursor -->
     <div class="cursor"></div>
     <div class="cursor-dot"></div>
     
-    <!-- Particles -->
-    <div class="particles-container"></div>
-    
-    <!-- Main Content -->
-    <div class="container">
-        <header>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
             <div class="logo">BOWERY</div>
             <nav>
-                <a href="#" class="nav-link" data-section="technology">Technology</a>
+                <a href="#" class="nav-link active" data-section="technology">Technology</a>
                 <a href="#" class="nav-link" data-section="solutions">Solutions</a>
                 <a href="#" class="nav-link" data-section="services">Services</a>
                 <a href="#" class="nav-link" data-section="contact">Contact</a>
             </nav>
-        </header>
-        
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section -->
         <section class="hero">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            
             <div class="hero-content">
-                <h1>
-                    <div class="line1">A New Operating System</div>
-                    <div class="line2">for Growth</div>
-                </h1>
+                <div class="hero-badge"><i class="fas fa-bolt"></i>Next-Generation AI Platform</div>
+                <h1>A New <span class="gradient-text">Operating System</span> for Growth</h1>
                 <p class="hero-description">AI-Powered Infrastructure. Strategic Execution. Scalable Results. Empowering ambitious brands and visionary practices with intelligent systems, automated workflows, and measurable performance.</p>
                 <div class="button-container">
                     <a href="#" class="button button-primary">Request Demo <i class="fas fa-arrow-right"></i></a>
                     <a href="#" class="button button-secondary">How It Works <i class="fas fa-play"></i></a>
                 </div>
             </div>
+        </section>
+        
+        <!-- Platform Architecture Section -->
+        <section class="platform-section">
+            <div class="section-header">
+                <h2 class="section-title">Optimized Platform Architecture</h2>
+                <p class="section-description">A structured, layered deployment approach emphasizing technological stability, client satisfaction, and strategic growth.</p>
+            </div>
             
             <div class="platform-architecture">
-                <h2 class="platform-title">Optimized Platform Architecture & Deployment</h2>
+                <div class="platform-glass"></div>
                 <div class="platform-components">
                     <div class="component-card" data-name="core-ai">
                         <div class="component-glow"></div>
+                        <div class="component-shine"></div>
                         <h3>Core AI & Knowledge Base</h3>
-                        <p>Robust AI foundation with comprehensive data sets driving intelligent decision-making and automation</p>
+                        <p>Robust AI foundation with comprehensive data sets driving intelligent decision-making and automation across the entire platform ecosystem.</p>
                     </div>
                     
                     <div class="connector">
+                        <div class="connector-path">
+                            <div class="data-particle" style="animation-delay: 0s;"></div>
+                            <div class="data-particle" style="animation-delay: 0.7s;"></div>
+                            <div class="data-particle" style="animation-delay: 1.4s;"></div>
+                        </div>
                         <div class="connector-line">
                             <div class="connector-dot-top"></div>
                             <div class="connector-dot-bottom"></div>
+                            <div class="connector-pulse"></div>
                         </div>
                     </div>
                     
                     <div class="component-card" data-name="client-apps">
                         <div class="component-glow"></div>
+                        <div class="component-shine"></div>
                         <h3>Client-Facing Applications</h3>
-                        <p>Intelligent tools designed for end-user engagement that simplify complex processes and deliver measurable results</p>
+                        <p>Intelligent tools designed for end-user engagement that simplify complex processes and deliver measurable results through intuitive interfaces.</p>
                     </div>
                     
                     <div class="connector">
+                        <div class="connector-path">
+                            <div class="data-particle" style="animation-delay: 0.2s;"></div>
+                            <div class="data-particle" style="animation-delay: 0.9s;"></div>
+                            <div class="data-particle" style="animation-delay: 1.6s;"></div>
+                        </div>
                         <div class="connector-line">
                             <div class="connector-dot-top"></div>
                             <div class="connector-dot-bottom"></div>
+                            <div class="connector-pulse"></div>
                         </div>
                     </div>
                     
                     <div class="component-card" data-name="strategic-services">
                         <div class="component-glow"></div>
+                        <div class="component-shine"></div>
                         <h3>Strategic Services</h3>
-                        <p>High-impact analytics, marketing, and sales enablement solutions driving measurable business outcomes</p>
+                        <p>High-impact analytics, marketing, and sales enablement solutions driving measurable business outcomes and sustainable competitive advantage.</p>
                     </div>
                 </div>
             </div>
         </section>
         
+        <!-- Deployment Workflow Section -->
         <section class="deployment-workflow">
-            <h2 class="section-title">Deployment Workflow</h2>
+            <div class="section-header">
+                <h2 class="section-title">Deployment Workflow</h2>
+                <p class="section-description">Our four-phase implementation process ensures seamless integration, continuous improvement, and measurable results throughout your journey.</p>
+            </div>
             
             <div class="workflow-container">
-                <div class="workflow-line"></div>
+                <div class="workflow-line">
+                    <div class="workflow-progress"></div>
+                </div>
                 
                 <div class="workflow-step" data-step="1">
                     <div class="step-number">1</div>
                     <h3 class="step-title">Foundation Build</h3>
-                    <p class="step-description">Establishing the core AI infrastructure and knowledge base</p>
+                    <p class="step-description">Establishing the core AI infrastructure and knowledge base tailored to your specific business requirements.</p>
                 </div>
                 
                 <div class="workflow-step" data-step="2">
                     <div class="step-number">2</div>
                     <h3 class="step-title">Application Deployment</h3>
-                    <p class="step-description">Configuring and launching client-facing tools and solutions</p>
+                    <p class="step-description">Configuring and launching client-facing tools and solutions with seamless integration into existing systems.</p>
                 </div>
                 
                 <div class="workflow-step" data-step="3">
                     <div class="step-number">3</div>
                     <h3 class="step-title">Data Feedback & Iteration</h3>
-                    <p class="step-description">Continuous improvement through actionable insights and refinement</p>
+                    <p class="step-description">Continuous improvement through actionable insights and refinement based on real-world performance metrics.</p>
                 </div>
                 
                 <div class="workflow-step" data-step="4">
                     <div class="step-number">4</div>
                     <h3 class="step-title">Strategic Service Delivery</h3>
-                    <p class="step-description">Executing high-impact initiatives based on data-driven intelligence</p>
+                    <p class="step-description">Executing high-impact initiatives based on data-driven intelligence to drive measurable business outcomes.</p>
                 </div>
             </div>
         </section>
         
-        <section class="key-features">
-            <h2 class="section-title">Key Platform Features</h2>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3>Advanced AI Models</h3>
-                    <p>Leverage cutting-edge machine learning algorithms for predictive analytics and automation</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Performance Analytics</h3>
-                    <p>Real-time dashboards providing actionable insights and measurable ROI</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                    <h3>Workflow Automation</h3>
-                    <p>Streamline complex processes with intelligent automation and custom workflows</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Enterprise Security</h3>
-                    <p>SOC 2 compliant infrastructure with end-to-end encryption and advanced permissions</p>
-                </div>
-            </div>
-        </section>
-        
-        <section class="testimonials">
-            <h2 class="section-title">Trusted by Industry Leaders</h2>
-            
-            <div class="testimonial-slider">
-                <div class="testimonial-card active">
-                    <div class="testimonial-content">
-                        <p>"Bowery's platform transformed our approach to data-driven marketing, increasing conversion rates by 43% in the first quarter."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-info">
-                            <h4>Sarah Johnson</h4>
-                            <p>CMO, TechVision Inc.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"The AI-driven insights have revolutionized our decision-making process, allowing us to identify opportunities we would have otherwise missed."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-info">
-                            <h4>Michael Zhang</h4>
-                            <p>Director of Analytics, Future Group</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"Implementing Bowery's platform was seamless, and the results have exceeded our expectations with a 3.2x ROI within six months."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-info">
-                            <h4>Elena Rodriguez</h4>
-                            <p>CEO, Innovate Solutions</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="testimonial-controls">
-                <button class="control-dot active" data-slide="0"></button>
-                <button class="control-dot" data-slide="1"></button>
-                <button class="control-dot" data-slide="2"></button>
-            </div>
-        </section>
-        
+        <!-- CTA Section -->
         <section class="cta-section">
-            <div class="cta-content">
-                <h2>Ready to Transform Your Business?</h2>
-                <p>Experience the power of AI-driven growth with Bowery's platform.</p>
+            <div class="section-header">
+                <h2 class="section-title">Ready to Transform Your Business?</h2>
+                <p class="section-description">Experience the power of AI-driven growth with Bowery's platform. Schedule a personalized demo today.</p>
+            </div>
+            
+            <div class="button-container" style="justify-content: center; margin-top: 40px;">
                 <a href="#" class="button button-primary">Schedule a Demo <i class="fas fa-arrow-right"></i></a>
+                <a href="#" class="button button-secondary">View Case Studies <i class="fas fa-external-link-alt"></i></a>
             </div>
         </section>
     </div>
-    
-    <footer>
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-logo">BOWERY</div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h3>Platform</h3>
-                        <ul>
-                            <li><a href="#">Core AI</a></li>
-                            <li><a href="#">Applications</a></li>
-                            <li><a href="#">Services</a></li>
-                            <li><a href="#">Integrations</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="footer-column">
-                        <h3>Company</h3>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Careers</a></li>
-                            <li><a href="#">Press</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="footer-column">
-                        <h3>Resources</h3>
-                        <ul>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Case Studies</a></li>
-                            <li><a href="#">Documentation</a></li>
-                            <li><a href="#">Support</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Bowery. All rights reserved.</p>
-                <div class="footer-social">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
     
     <script src="scripts.js"></script>
 </body>

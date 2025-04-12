@@ -1,96 +1,76 @@
-// Initialize when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize animations
-    initAnimations();
+// Three.js Background
+function initThreeBackground() {
+    const canvas = document.getElementById('bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     
-    // Initialize particles
-    initParticles();
+    const scene = new THREE.Scene();
     
-    // Initialize custom cursor
-    initCustomCursor();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 30;
     
-    // Initialize interactive elements
-    initInteractiveElements();
+    // Create particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 2000;
     
-    // Initialize testimonial slider
-    initTestimonialSlider();
+    const posArray = new Float32Array(particlesCount * 3);
+    const scaleArray = new Float32Array(particlesCount);
     
-    // Initialize scroll effects
-    initScrollEffects();
-});
-
-// Initialize animations
-function initAnimations() {
-    // Hero animations with slight delays for sequence
-    gsap.to("h1 .line1", {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-    });
-    
-    gsap.to("h1 .line2", {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        delay: 0.2,
-        ease: "power3.out"
-    });
-    
-    gsap.to(".hero-description", {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        delay: 0.4,
-        ease: "power3.out"
-    });
-    
-    gsap.to(".button-container", {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        delay: 0.6,
-        ease: "power3.out"
-    });
-    
-    // Platform architecture
-    gsap.to(".platform-architecture", {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: 0.8,
-        ease: "power3.out"
-    });
-}
-
-// Initialize particles
-function initParticles() {
-    const particlesContainer = document.querySelector('.particles-container');
-    const particlesCount = 50;
-    
-    for (let i = 0; i < particlesCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        
-        // Random properties
-        const size = Math.random() * 3 + 1;
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-        const opacity = Math.random() * 0.5 + 0.1;
-        const animationDuration = (Math.random() * 20 + 10) + 's';
-        const animationDelay = (Math.random() * 10) + 's';
-        
-        // Apply styles
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${posX}%`;
-        particle.style.top = `${posY}%`;
-        particle.style.opacity = opacity;
-        particle.style.animation = `float ${animationDuration} linear infinite`;
-        particle.style.animationDelay = animationDelay;
-        
-        particlesContainer.appendChild(particle);
+    for(let i = 0; i < particlesCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 100;
     }
+    
+    for(let i = 0; i < particlesCount; i++) {
+        scaleArray[i] = Math.random();
+    }
+    
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    particlesGeometry.setAttribute('scale', new THREE.BufferAttribute(scaleArray, 1));
+    
+    // Materials
+    const particlesMaterial = new THREE.PointsMaterial({
+        size: 0.2,
+        transparent: true,
+        color: 0xffffff,
+        blending: THREE.AdditiveBlending,
+        sizeAttenuation: true,
+    });
+    
+    // Mesh
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+    
+    // Animation
+    let mouseX = 0;
+    let mouseY = 0;
+    
+    document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
+    
+    const animate = () => {
+        requestAnimationFrame(animate);
+        
+        // Rotate particles slightly based on mouse position
+        particlesMesh.rotation.x += 0.0003;
+        particlesMesh.rotation.y += 0.0005;
+        
+        particlesMesh.rotation.x += mouseY * 0.0005;
+        particlesMesh.rotation.y += mouseX * 0.0005;
+        
+        renderer.render(scene, camera);
+    };
+    
+    animate();
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 }
 
 // Initialize custom cursor
@@ -124,22 +104,55 @@ function initCustomCursor() {
         cursor.style.opacity = '1';
         cursorDot.style.opacity = '1';
     });
-}
-
-// Initialize interactive elements
-function initInteractiveElements() {
+    
     // Interactive elements for cursor effects
-    const interactiveElements = document.querySelectorAll('a, .button, .component-card, .feature-card');
+    const interactiveElements = document.querySelectorAll('a, .button, .component-card, .workflow-step');
     
     interactiveElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
-            document.querySelector('.cursor')?.classList.add('cursor-grow');
-            document.querySelector('.cursor-dot')?.classList.add('cursor-dot-grow');
+            cursor.classList.add('cursor-grow');
+            cursorDot.classList.add('cursor-dot-grow');
         });
         
         el.addEventListener('mouseleave', () => {
-            document.querySelector('.cursor')?.classList.remove('cursor-grow');
-            document.querySelector('.cursor-dot')?.classList.remove('cursor-dot-grow');
+            cursor.classList.remove('cursor-grow');
+            cursorDot.classList.remove('cursor-dot-grow');
+        });
+    });
+}
+
+// Initialize interactive component cards
+function initComponentCards() {
+    const componentCards = document.querySelectorAll('.component-card');
+    
+    componentCards.forEach(card => {
+        // 3D hover effect
+        card.addEventListener('mousemove', (e) => {
+            const bounds = card.getBoundingClientRect();
+            const mouseX = e.clientX - bounds.left;
+            const mouseY = e.clientY - bounds.top;
+            
+            const centerX = bounds.width / 2;
+            const centerY = bounds.height / 2;
+            
+            const percentX = (mouseX - centerX) / centerX;
+            const percentY = (mouseY - centerY) / centerY;
+            
+            const maxRotate = 5; // Max rotation in degrees
+            
+            card.style.transform = `perspective(1000px) rotateX(${-percentY * maxRotate}deg) rotateY(${percentX * maxRotate}deg)`;
+            
+            // Update glow position
+            const glow = card.querySelector('.component-glow');
+            if (glow) {
+                glow.style.left = `${mouseX - 150}px`;
+                glow.style.top = `${mouseY - 150}px`;
+            }
+        });
+        
+        // Reset on mouse leave
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
         });
     });
     
@@ -160,23 +173,6 @@ function initInteractiveElements() {
             highlightSection(section);
         });
     });
-    
-    // Interactive component cards
-    const componentCards = document.querySelectorAll('.component-card');
-    
-    componentCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const bounds = card.getBoundingClientRect();
-            const mouseX = e.clientX - bounds.left;
-            const mouseY = e.clientY - bounds.top;
-            
-            const glow = card.querySelector('.component-glow');
-            if (glow) {
-                glow.style.left = `${mouseX - 75}px`;
-                glow.style.top = `${mouseY - 75}px`;
-            }
-        });
-    });
 }
 
 // Highlight platform section based on navigation
@@ -195,161 +191,133 @@ function highlightSection(section) {
     }
 }
 
-// Initialize testimonial slider
-function initTestimonialSlider() {
-    const testimonials = document.querySelectorAll('.testimonial-card');
-    const dots = document.querySelectorAll('.control-dot');
-    let currentSlide = 0;
+// Initialize workflow steps interaction
+function initWorkflowSteps() {
+    const workflowSteps = document.querySelectorAll('.workflow-step');
+    const workflowProgress = document.querySelector('.workflow-progress');
     
-    // Set up control dots
-    dots.forEach(dot => {
-        dot.addEventListener('click', () => {
-            const slideIndex = parseInt(dot.getAttribute('data-slide'));
-            showSlide(slideIndex);
+    workflowSteps.forEach((step, index) => {
+        step.addEventListener('mouseenter', () => {
+            // Reset all steps
+            workflowSteps.forEach(s => s.classList.remove('active'));
+            
+            // Activate current step
+            step.classList.add('active');
+            
+            // Update progress bar
+            const progressPercent = ((index + 1) / workflowSteps.length) * 100;
+            workflowProgress.style.width = `${progressPercent}%`;
         });
     });
-    
-    // Auto-advance slides every 5 seconds
-    setInterval(() => {
-        currentSlide = (currentSlide + 1) % testimonials.length;
-        showSlide(currentSlide);
-    }, 5000);
-    
-    // Show specific slide
-    function showSlide(index) {
-        // Hide all slides
-        testimonials.forEach(slide => slide.classList.remove('active'));
-        dots.forEach(dot => dot.classList.remove('active'));
-        
-        // Show selected slide
-        testimonials[index].classList.add('active');
-        dots[index].classList.add('active');
-        
-        currentSlide = index;
-    }
 }
 
-// Initialize scroll effects with GSAP ScrollTrigger
-function initScrollEffects() {
-    // Section titles
-    gsap.utils.toArray('.section-title').forEach(title => {
-        gsap.to(title, {
-            scrollTrigger: {
-                trigger: title,
-                start: "top 80%",
-            },
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out"
-        });
+// Initialize scroll animations
+function initScrollAnimations() {
+    // Hero section animations
+    gsap.to('.hero-badge', {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out'
+    });
+    
+    gsap.to('h1', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.2,
+        ease: 'power3.out'
+    });
+    
+    gsap.to('.hero-description', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.4,
+        ease: 'power3.out'
+    });
+    
+    gsap.to('.button-container', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.6,
+        ease: 'power3.out'
+    });
+    
+    // Scroll-triggered animations
+    gsap.to('.section-title', {
+        scrollTrigger: {
+            trigger: '.section-title',
+            start: 'top 80%',
+        },
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+    });
+    
+    gsap.to('.section-description', {
+        scrollTrigger: {
+            trigger: '.section-description',
+            start: 'top 80%',
+        },
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.2,
+        ease: 'power3.out'
+    });
+    
+    gsap.to('.platform-architecture', {
+        scrollTrigger: {
+            trigger: '.platform-architecture',
+            start: 'top 70%',
+        },
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out'
     });
     
     // Workflow steps animation
-    gsap.to(".workflow-step", {
+    gsap.to('.workflow-step', {
         scrollTrigger: {
-            trigger: ".workflow-container",
-            start: "top 70%",
+            trigger: '.workflow-container',
+            start: 'top 70%',
         },
         opacity: 1,
         y: 0,
         duration: 0.8,
         stagger: 0.2,
-        ease: "power3.out"
+        ease: 'power3.out'
     });
     
-    // Feature cards animation
-    gsap.to(".feature-card", {
-        scrollTrigger: {
-            trigger: ".features-grid",
-            start: "top 70%",
-        },
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out"
-    });
-    
-    // CTA section animation
-    gsap.to(".cta-section", {
-        scrollTrigger: {
-            trigger: ".cta-section",
-            start: "top 80%",
-        },
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-    });
-    
-    // Parallax effect on particles
-    gsap.to(".particles-container", {
-        scrollTrigger: {
-            trigger: "body",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1
-        },
-        y: "20%",
-        ease: "none"
-    });
-}
-
-// Dynamic data loading (simulated)
-// Could be replaced with real API calls in production
-function loadDynamicData() {
-    // Example of how you might load data dynamically
-    fetch('https://api.example.com/platform-data')
-        .then(response => response.json())
-        .then(data => {
-            // Update platform components with real data
-            updatePlatformComponents(data);
-        })
-        .catch(error => {
-            console.error('Error loading dynamic data:', error);
-        });
-}
-
-// Update platform components with dynamic data
-function updatePlatformComponents(data) {
-    // This is a placeholder function showing how dynamic data could be used
-    const componentCards = document.querySelectorAll('.component-card');
-    
-    componentCards.forEach((card, index) => {
-        if (data.components && data.components[index]) {
-            const component = data.components[index];
-            
-            // Update component title
-            const title = card.querySelector('h3');
-            if (title && component.title) {
-                title.textContent = component.title;
-            }
-            
-            // Update component description
-            const description = card.querySelector('p');
-            if (description && component.description) {
-                description.textContent = component.description;
-            }
+    // Fixed header on scroll
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
         }
     });
 }
 
-// Add magnetic effect to buttons
-function addMagneticEffect() {
-    const buttons = document.querySelectorAll('.button');
+// Initialize everything when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Three.js background
+    initThreeBackground();
     
-    buttons.forEach(button => {
-        button.addEventListener('mousemove', (e) => {
-            const position = button.getBoundingClientRect();
-            const x = e.clientX - position.left - position.width / 2;
-            const y = e.clientY - position.top - position.height / 2;
-            
-            button.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-        });
-        
-        button.addEventListener('mouseout', () => {
-            button.style.transform = '';
-        });
-    });
-}
+    // Initialize custom cursor
+    initCustomCursor();
+    
+    // Initialize component cards
+    initComponentCards();
+    
+    // Initialize workflow steps
+    initWorkflowSteps();
+    
+    // Initialize scroll animations
+    initScrollAnimations();
+});
